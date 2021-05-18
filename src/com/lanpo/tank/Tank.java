@@ -1,6 +1,7 @@
 package com.lanpo.tank;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * @author li zhipeng
@@ -9,9 +10,18 @@ import java.awt.*;
 public class Tank {
     private int x = 200,y = 200;
 
+    public static int Width = ResourceMgr.tankD.getWidth();
+    public static int Height = ResourceMgr.tankD.getHeight();
+
     DirEnum dir = DirEnum.DOWN;
     private final static int SPEED = 5;
-    private boolean moving = false;
+    private boolean moving = true;
+
+    private boolean living = true;
+
+    private Random random = new Random();
+
+    private Group group = Group.BAD;
 
     private TankFrame tf = null;
 
@@ -47,21 +57,42 @@ public class Tank {
         this.dir = dir;
     }
 
-    public Tank(int x, int y, DirEnum dir, boolean moving, TankFrame tf) {
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Tank(int x, int y, DirEnum dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.moving = moving;
+        this.group = group;
         this.tf = tf;
     }
 
     public void paint(Graphics g){
 //        System.out.println("paint");
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.fillRect(x,y,50,50);
-        g.setColor(c);
+        if(!living) tf.tanks.remove(this);
+
+        switch (dir){
+            case LEFT:
+                g.drawImage(ResourceMgr.tankL,x,y,null);
+                break;
+            case RIGHT:
+                g.drawImage(ResourceMgr.tankR,x,y,null);
+                break;
+            case UP:
+                g.drawImage(ResourceMgr.tankU,x,y,null);
+                break;
+            case DOWN:
+                g.drawImage(ResourceMgr.tankD,x,y,null);
+                break;
+        }
         move();
+
     }
     private void move(){
         if(!moving) return;
@@ -81,11 +112,39 @@ public class Tank {
             default:
                 break;
         }
+
+
+        if(this.group == Group.BAD && random.nextInt(10)>8) {
+            this.fire();
+            int i = new Random().nextInt(5);
+            System.out.println("i: "+i);
+            switch (i){
+                case 1:
+                    this.dir = DirEnum.LEFT;
+                    break;
+                case 2:
+                    this.dir = DirEnum.RIGHT;
+                    break;
+                case 3:
+                    this.dir = DirEnum.UP;
+                    break;
+                case 4:
+                    this.dir = DirEnum.DOWN;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void fire(){
-       tf.bullets.add(new Bullet(this.x+23, this.y+23, this.dir, tf));
+        int xl = x + Width/2 - Bullet.weight/2;
+        int yl = y + Height/2 - Bullet.height/2;
+       tf.bullets.add(new Bullet(xl,yl, this.dir,this.group, tf));
     }
 
+    public void die(){
+        this.living = false;
+    }
 
 }
