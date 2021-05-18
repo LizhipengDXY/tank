@@ -23,7 +23,7 @@ public class TankFrame extends Frame {
     List<Explode> explodes = new ArrayList<>();
 
 
-    static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
+    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     public TankFrame(){
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         setResizable(false);
@@ -61,7 +61,8 @@ public class TankFrame extends Frame {
         Color color = g.getColor();
         g.setColor(Color.RED);
         g.drawString("子弹的数量"+bullets.size(),10,60);
-        g.drawString("敌人的数量"+tanks.size(),700,60);
+        g.drawString("敌人的数量"+tanks.size(),10,90);
+        g.drawString("敌人的数量"+explodes.size(),10,120);
         g.setColor(color);
         myTank.paint(g);
         for (int i = 0; i < bullets.size(); i++) {
@@ -72,18 +73,14 @@ public class TankFrame extends Frame {
             tanks.get(i).paint(g);
         }
 
-        for (int i = 0; i < bullets.size(); i++) {
-            for (int j = 0; j < tanks.size(); j++) {
-
-               boolean f = bullets.get(i).collideWith(tanks.get(j));
-               if(f) {
-                   Explode e = new Explode(tanks.get(j).getX(),tanks.get(j).getY(),this);
-                   explodes.add(e);
-               }
-            }
-        }
         for (int i = 0; i < explodes.size(); i++) {
             explodes.get(i).paint(g);
+        }
+
+        for(int i = 0; i < bullets.size(); i++){
+            for(int j = 0; j < tanks.size(); j++){
+                bullets.get(i).collideWith(tanks.get(j));
+            }
         }
 
 
