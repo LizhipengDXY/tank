@@ -15,8 +15,13 @@ import java.util.List;
  */
 public class TankFrame extends Frame {
 
-    Tank myTank = new Tank(200,200,DirEnum.DOWN,false,this);
+    Tank myTank = new Tank(200,100,DirEnum.DOWN,Group.GOOD,this);
     List<Bullet> bullets = new ArrayList<>();
+
+    List<Tank> tanks = new ArrayList<>();
+
+    List<Explode> explodes = new ArrayList<>();
+
 
     static final int GAME_WIDTH = 800, GAME_HEIGHT = 600;
     public TankFrame(){
@@ -47,6 +52,7 @@ public class TankFrame extends Frame {
         gOffScreen.setColor(c);
         paint(gOffScreen);
         g.drawImage(offScreenImage,0,0,null);
+
     }
 
     @Override
@@ -55,11 +61,32 @@ public class TankFrame extends Frame {
         Color color = g.getColor();
         g.setColor(Color.RED);
         g.drawString("子弹的数量"+bullets.size(),10,60);
+        g.drawString("敌人的数量"+tanks.size(),700,60);
         g.setColor(color);
-       myTank.paint(g);
+        myTank.paint(g);
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).paint(g);
         }
+
+        for (int i = 0; i < tanks.size(); i++) {
+            tanks.get(i).paint(g);
+        }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            for (int j = 0; j < tanks.size(); j++) {
+
+               boolean f = bullets.get(i).collideWith(tanks.get(j));
+               if(f) {
+                   Explode e = new Explode(tanks.get(j).getX(),tanks.get(j).getY(),this);
+                   explodes.add(e);
+               }
+            }
+        }
+        for (int i = 0; i < explodes.size(); i++) {
+            explodes.get(i).paint(g);
+        }
+
+
     }
 
     class MyKeyListener extends KeyAdapter{
