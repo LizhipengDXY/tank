@@ -1,6 +1,7 @@
 package com.lanpo.tank;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Random;
  * @date 2021/5/12
  */
 public class Tank {
-    private int x = 200,y = 200;
+    int x = 200,y = 200;
 
     public static int Width = ResourceMgr.badTankL.getWidth();
     public static int Height = ResourceMgr.badTankL.getHeight();
@@ -23,9 +24,11 @@ public class Tank {
 
     private Random random = new Random();
 
-    private Group group = Group.BAD;
+    Group group = Group.BAD;
 
-    private TankFrame tf = null;
+    FireStrategy fs;
+
+    TankFrame tf = null;
 
     public boolean isMoving() {
         return moving;
@@ -78,6 +81,30 @@ public class Tank {
         rect.y = this.y;
         rect.width = Width;
         rect.height = Height;
+
+        if(group == Group.GOOD) {
+            String goodFsName = (String) PropertyMgr.getKey("goodFs");
+
+
+            try {
+                fs = (FireStrategy) Class.forName(goodFsName).getDeclaredConstructor().newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+        else {
+          fs = new DefaultFireStrategy();
+        }
     }
 
     public void paint(Graphics g){
@@ -172,9 +199,7 @@ public class Tank {
     }
 
     public void fire(){
-        int xl = x + Width/2 - Bullet.weight/2;
-        int yl = y + Height/2 - Bullet.height/2;
-       tf.bullets.add(new Bullet(xl,yl, this.dir,this.group, tf));
+        fs.fire(this);
     }
 
     public void die(){
