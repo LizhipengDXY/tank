@@ -1,8 +1,8 @@
 package com.lanpo.tank;
 
-import com.lanpo.tank.abstractfactory.BaseTank;
-
-import java.awt.*;
+import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
@@ -10,7 +10,7 @@ import java.util.Random;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Tank extends BaseTank {
+public class Tank {
     int x = 200,y = 200;
 
     public static int Width = ResourceMgr.badTankL.getWidth();
@@ -21,16 +21,18 @@ public class Tank extends BaseTank {
     private boolean moving = true;
 
 
+    Rectangle rect = new Rectangle();
 
     private boolean living = true;
 
     private Random random = new Random();
 
+    GameModel gm = null;
 
+    Group group = Group.GOOD;
 
     FireStrategy fs;
 
-    TankFrame tf = null;
 
     public boolean isMoving() {
         return moving;
@@ -64,13 +66,20 @@ public class Tank extends BaseTank {
         this.dir = dir;
     }
 
+    public Group getGroup() {
+        return group;
+    }
 
-    public Tank(int x, int y, DirEnum dir, Group group, TankFrame tf) {
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Tank(int x, int y, DirEnum dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
+        this.gm = gm;
 
         rect.x = this.x;
         rect.y = this.y;
@@ -104,7 +113,7 @@ public class Tank extends BaseTank {
 
     public void paint(Graphics g){
 //        System.out.println("paint");
-        if(!living) tf.tanks.remove(this);
+        if(!living) gm.tanks.remove(this);
 
         switch (dir){
             case LEFT:
@@ -133,8 +142,8 @@ public class Tank extends BaseTank {
     private void boundsCheck(){
         if(x < 2) x = 2;
         if(y < 2) y = 2;
-        if(x > TankFrame.GAME_WIDTH - Tank.Width -2) x = TankFrame.GAME_WIDTH - Tank.Width -2;
-        if(y > TankFrame.GAME_HEIGHT - Tank.Height -2) y = TankFrame.GAME_HEIGHT - Tank.Height -2;
+        if(x > gm.GAME_WIDTH - Tank.Width -2) x = gm.GAME_WIDTH - Tank.Width -2;
+        if(y > gm.GAME_HEIGHT - Tank.Height -2) y = gm.GAME_HEIGHT - Tank.Height -2;
     }
 
     private void move(){
@@ -200,7 +209,7 @@ public class Tank extends BaseTank {
 
         DirEnum[] dirs = DirEnum.values();
         for (DirEnum dir:dirs) {
-            this.tf.gf.createBullet(bX,bY,dir,this.group,this.tf);
+            this.gm.bullets.add(new Bullet(bX,bY,dir,this.group,gm));
         }
 
         if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();

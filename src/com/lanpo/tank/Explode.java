@@ -1,6 +1,6 @@
 package com.lanpo.tank;
 
-import com.lanpo.tank.abstractfactory.BaseExplode;
+
 
 import java.awt.*;
 
@@ -8,32 +8,32 @@ import java.awt.*;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Explode extends BaseExplode {
+public class Explode  {
 
     private int x,y;
 
     public final static int weight = ResourceMgr.bulletD.getWidth();
     public final static int height = ResourceMgr.bulletD.getHeight();
-    private TankFrame tf = null;
     private boolean living = true;
 
     private int step =0;
 
+    GameModel gm = null;
 
-    public Explode(int x, int y,TankFrame tf) {
+    public Explode(int x, int y,GameModel gm) {
 
         this.x = x;
         this.y = y;
 
-        this.tf = tf;
+        this.gm = gm;
         new Thread(()->new Audio("audio/explode.wav").play()).start();
     }
 
-    @Override
+
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.explodes[step++],x,y,null);
         if(step > ResourceMgr.explodes.length-1)
-            tf.explodes.remove(this);
+            gm.explodes.remove(this);
     }
 
     public int getStep() {

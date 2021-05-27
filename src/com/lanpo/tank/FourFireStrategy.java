@@ -1,6 +1,6 @@
 package com.lanpo.tank;
 
-import com.lanpo.tank.abstractfactory.BaseTank;
+
 
 /**
  * @author li zhipeng
@@ -15,7 +15,7 @@ public class FourFireStrategy implements FireStrategy{
 
         DirEnum[] dirs = DirEnum.values();
         for (DirEnum dir:dirs) {
-            t.tf.gf.createBullet(bX,bY,dir,t.group,t.tf);
+            t.gm.bullets.add(new Bullet(bX,bY,dir,t.group,t.gm));
         }
 
         if(t.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();

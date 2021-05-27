@@ -1,7 +1,5 @@
 package com.lanpo.tank;
 
-import com.lanpo.tank.abstractfactory.BaseBullet;
-import com.lanpo.tank.abstractfactory.BaseTank;
 
 import java.awt.*;
 
@@ -9,7 +7,7 @@ import java.awt.*;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Bullet extends BaseBullet {
+public class Bullet {
     private static final int SPEED = 10;
     private int x,y;
     private DirEnum dir;
@@ -18,27 +16,28 @@ public class Bullet extends BaseBullet {
 
     Rectangle rect = new Rectangle();
 
-    private TankFrame tf = null;
     private boolean live = true;
     public Group group = Group.BAD;
 
-    public Bullet(int x, int y, DirEnum dir,Group group, TankFrame tf) {
+    GameModel gm = null;
+
+    public Bullet(int x, int y, DirEnum dir,Group group, GameModel gm) {
 
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.tf = tf;
+        this.gm = gm;
         rect.x = this.x;
         rect.y = this.y;
         rect.width = weight;
         rect.height = height;
 
-        tf.bullets.add(this);
+        gm.bullets.add(this);
     }
 
     public void paint(Graphics g){
-        if(!live) tf.bullets.remove(this);
+        if(!live) gm.bullets.remove(this);
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.bulletL,x,y,null);
@@ -77,7 +76,7 @@ public class Bullet extends BaseBullet {
         rect.x = x;
         rect.y = y;
 
-        if(x < 0 || x > tf.GAME_WIDTH || y < 0 ||y > tf.GAME_HEIGHT) live = false;
+        if(x < 0 || x > gm.GAME_WIDTH || y < 0 ||y > gm.GAME_HEIGHT) live = false;
 
     }
 
@@ -85,8 +84,8 @@ public class Bullet extends BaseBullet {
         this.live = false;
     }
 
-    public void collideWith(BaseTank tank){
-        if(this.group == tank.getGroup()) return;
+    public void collideWith(Tank tank){
+        if(this.group == tank.group) return;
 
         if(rect.intersects(tank.rect)){
 //            System.out.println("TRUE");
@@ -94,7 +93,7 @@ public class Bullet extends BaseBullet {
             this.die();
             int eX = tank.getX() + Tank.Width/2 - Explode.weight/2;
             int eY = tank.getY() + Tank.Height/2 - Explode.height/2;
-            tf.explodes.add(tf.gf.createExplode(eX,eY,tf));
+            gm.explodes.add(new Explode(eX,eY,gm));
 
         }
 
