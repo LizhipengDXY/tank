@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2021/5/12
  */
 public class TankFrame extends Frame {
-
+//qie huan fen zhi
     Tank myTank = new Tank(200,100,DirEnum.DOWN,Group.GOOD,this);
     public List<BaseBullet> bullets = new ArrayList<>();
 
