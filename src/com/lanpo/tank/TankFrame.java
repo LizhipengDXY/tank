@@ -1,5 +1,7 @@
 package com.lanpo.tank;
 
+import com.lanpo.tank.abstractfactory.*;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -16,14 +18,15 @@ import java.util.List;
 public class TankFrame extends Frame {
 
     Tank myTank = new Tank(200,100,DirEnum.DOWN,Group.GOOD,this);
-    List<Bullet> bullets = new ArrayList<>();
+    public List<BaseBullet> bullets = new ArrayList<>();
 
-    List<Tank> tanks = new ArrayList<>();
+    public List<BaseTank> tanks = new ArrayList<>();
 
-    List<Explode> explodes = new ArrayList<>();
+    public List<BaseExplode> explodes = new ArrayList<>();
 
+    public GameFactory gf = new RectFactory();
 
-    static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+    public static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
     public TankFrame(){
         this.setSize(GAME_WIDTH,GAME_HEIGHT);
         setResizable(false);
@@ -78,6 +81,7 @@ public class TankFrame extends Frame {
         }
 
         for(int i = 0; i < bullets.size(); i++){
+
             for(int j = 0; j < tanks.size(); j++){
                 bullets.get(i).collideWith(tanks.get(j));
             }

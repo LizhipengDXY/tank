@@ -1,7 +1,6 @@
-package com.lanpo.tank;
+package com.lanpo.tank.abstractfactory;
 
-import com.lanpo.tank.abstractfactory.BaseBullet;
-import com.lanpo.tank.abstractfactory.BaseTank;
+import com.lanpo.tank.*;
 
 import java.awt.*;
 
@@ -9,7 +8,7 @@ import java.awt.*;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Bullet extends BaseBullet {
+public class RectBullet extends BaseBullet {
     private static final int SPEED = 10;
     private int x,y;
     private DirEnum dir;
@@ -22,7 +21,7 @@ public class Bullet extends BaseBullet {
     private boolean live = true;
     public Group group = Group.BAD;
 
-    public Bullet(int x, int y, DirEnum dir,Group group, TankFrame tf) {
+    public RectBullet(int x, int y, DirEnum dir, Group group, TankFrame tf) {
 
         this.x = x;
         this.y = y;
@@ -39,20 +38,11 @@ public class Bullet extends BaseBullet {
 
     public void paint(Graphics g){
         if(!live) tf.bullets.remove(this);
-        switch (dir){
-            case LEFT:
-                g.drawImage(ResourceMgr.bulletL,x,y,null);
-                break;
-            case RIGHT:
-                g.drawImage(ResourceMgr.bulletR,x,y,null);
-                break;
-            case UP:
-                g.drawImage(ResourceMgr.bulletU,x,y,null);
-                break;
-            case DOWN:
-                g.drawImage(ResourceMgr.bulletD,x,y,null);
-                break;
-        }
+
+        Color c = g.getColor();
+        g.setColor(Color.yellow);
+        g.fillRect(x,y,20,20);
+        g.setColor(c);
         move();
     }
 
@@ -87,9 +77,9 @@ public class Bullet extends BaseBullet {
 
     public void collideWith(BaseTank tank){
         if(this.group == tank.getGroup()) return;
-
+        System.out.println(this.group+" "+tank.group);
+        System.out.println(rect.toString()+" "+tank.rect.toString());
         if(rect.intersects(tank.rect)){
-//            System.out.println("TRUE");
             tank.die();
             this.die();
             int eX = tank.getX() + Tank.Width/2 - Explode.weight/2;

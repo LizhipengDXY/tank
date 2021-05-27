@@ -1,6 +1,6 @@
-package com.lanpo.tank;
+package com.lanpo.tank.abstractfactory;
 
-import com.lanpo.tank.abstractfactory.BaseTank;
+import com.lanpo.tank.*;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +10,7 @@ import java.util.Random;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Tank extends BaseTank {
+public class RectTank extends BaseTank {
     int x = 200,y = 200;
 
     public static int Width = ResourceMgr.badTankL.getWidth();
@@ -21,12 +21,11 @@ public class Tank extends BaseTank {
     private boolean moving = true;
 
 
-
     private boolean living = true;
 
     private Random random = new Random();
 
-
+    Group group = Group.BAD;
 
     FireStrategy fs;
 
@@ -64,8 +63,15 @@ public class Tank extends BaseTank {
         this.dir = dir;
     }
 
+    public Group getGroup() {
+        return group;
+    }
 
-    public Tank(int x, int y, DirEnum dir, Group group, TankFrame tf) {
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public RectTank(int x, int y, DirEnum dir, Group group, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -106,35 +112,25 @@ public class Tank extends BaseTank {
 //        System.out.println("paint");
         if(!living) tf.tanks.remove(this);
 
-        switch (dir){
-            case LEFT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL,x,y,null);
-                break;
-            case RIGHT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR,x,y,null);
-                break;
-            case UP:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU,x,y,null);
-                break;
-            case DOWN:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD,x,y,null);
-                break;
-        }
+        Color c = g.getColor();
+        g.setColor(group == Group.GOOD ? Color.RED : Color.BLUE);
+        g.fillRect(x,y,40,40);
+        g.setColor(c);
         move();
 
     }
 
     private void randomDir(){
         int i = random.nextInt(4);
-        System.out.println("i: "+i);
+       // System.out.println("i: "+i);
         this.dir = DirEnum.values()[i];
     }
 
     private void boundsCheck(){
         if(x < 2) x = 2;
         if(y < 2) y = 2;
-        if(x > TankFrame.GAME_WIDTH - Tank.Width -2) x = TankFrame.GAME_WIDTH - Tank.Width -2;
-        if(y > TankFrame.GAME_HEIGHT - Tank.Height -2) y = TankFrame.GAME_HEIGHT - Tank.Height -2;
+        if(x > TankFrame.GAME_WIDTH - RectTank.Width -2) x = TankFrame.GAME_WIDTH - RectTank.Width -2;
+        if(y > TankFrame.GAME_HEIGHT - RectTank.Height -2) y = TankFrame.GAME_HEIGHT - RectTank.Height -2;
     }
 
     private void move(){
@@ -194,7 +190,7 @@ public class Tank extends BaseTank {
     }
 
     public void fire(){
-        //fs.fire(this);
+      //  fs.fire(this);
         int bX = this.x +Tank.Width/2 - Bullet.weight/2;
         int bY = this.y + Tank.Height/2 - Bullet.height/2;
 

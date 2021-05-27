@@ -1,12 +1,14 @@
 package com.lanpo.tank;
 
+import com.lanpo.tank.abstractfactory.BaseExplode;
+
 import java.awt.*;
 
 /**
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Explode {
+public class Explode extends BaseExplode {
 
     private int x,y;
 
@@ -27,6 +29,7 @@ public class Explode {
         new Thread(()->new Audio("audio/explode.wav").play()).start();
     }
 
+    @Override
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.explodes[step++],x,y,null);
         if(step > ResourceMgr.explodes.length-1)
