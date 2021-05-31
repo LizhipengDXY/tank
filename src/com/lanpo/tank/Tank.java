@@ -1,7 +1,9 @@
 package com.lanpo.tank;
 
+import com.lanpo.tank.strategy.DefaultFireStrategy;
+import com.lanpo.tank.strategy.FireStrategy;
+
 import java.awt.Rectangle;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
@@ -10,13 +12,13 @@ import java.util.Random;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Tank {
-    int x = 200,y = 200;
+public class Tank extends GameObject{
+    public int x = 200,y = 200;
 
     public static int Width = ResourceMgr.badTankL.getWidth();
     public static int Height = ResourceMgr.badTankL.getHeight();
 
-    DirEnum dir = DirEnum.DOWN;
+    public DirEnum dir = DirEnum.DOWN;
     private final static int SPEED = 5;
     private boolean moving = true;
 
@@ -27,9 +29,9 @@ public class Tank {
 
     private Random random = new Random();
 
-    GameModel gm = null;
+    public GameModel gm = null;
 
-    Group group = Group.GOOD;
+    public Group group = Group.GOOD;
 
     FireStrategy fs;
 
@@ -74,6 +76,14 @@ public class Tank {
         this.group = group;
     }
 
+    public Rectangle getRect() {
+        return rect;
+    }
+
+    public void setRect(Rectangle rect) {
+        this.rect = rect;
+    }
+
     public Tank(int x, int y, DirEnum dir, Group group, GameModel gm) {
         this.x = x;
         this.y = y;
@@ -113,7 +123,7 @@ public class Tank {
 
     public void paint(Graphics g){
 //        System.out.println("paint");
-        if(!living) gm.tanks.remove(this);
+        if(!living) gm.remove(this);
 
         switch (dir){
             case LEFT:
@@ -135,7 +145,7 @@ public class Tank {
 
     private void randomDir(){
         int i = random.nextInt(4);
-        System.out.println("i: "+i);
+       // System.out.println("i: "+i);
         this.dir = DirEnum.values()[i];
     }
 
@@ -209,7 +219,7 @@ public class Tank {
 
         DirEnum[] dirs = DirEnum.values();
         for (DirEnum dir:dirs) {
-            this.gm.bullets.add(new Bullet(bX,bY,dir,this.group,gm));
+            this.gm.add(new Bullet(bX,bY,dir,this.group,gm));
         }
 
         if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
@@ -217,6 +227,10 @@ public class Tank {
 
     public void die(){
         this.living = false;
+    }
+
+    public void stop(){
+        this.moving = false;
     }
 
 }

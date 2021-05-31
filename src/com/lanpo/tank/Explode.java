@@ -8,7 +8,7 @@ import java.awt.*;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Explode  {
+public class Explode extends GameObject{
 
     private int x,y;
 
@@ -33,7 +33,7 @@ public class Explode  {
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.explodes[step++],x,y,null);
         if(step > ResourceMgr.explodes.length-1)
-            gm.explodes.remove(this);
+            gm.remove(this);
     }
 
     public int getStep() {

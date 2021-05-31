@@ -1,12 +1,14 @@
-package com.lanpo.tank;
+package com.lanpo.tank.strategy;
 
+
+import com.lanpo.tank.*;
 
 /**
  * @author li zhipeng
  * @date 2021/5/24
  * @Description:
  */
-public class DefaultFireStrategy implements FireStrategy{
+public class DefaultFireStrategy implements FireStrategy {
     @Override
     public void fire(Tank t) {
         int bX = t.x +Tank.Width/2 - Bullet.weight/2;

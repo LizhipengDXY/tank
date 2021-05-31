@@ -1,6 +1,7 @@
-package com.lanpo.tank;
+package com.lanpo.tank.strategy;
 
 
+import com.lanpo.tank.Tank;
 
 /**
  * @author li zhipeng

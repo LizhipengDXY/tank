@@ -7,8 +7,8 @@ import java.awt.*;
  * @author li zhipeng
  * @date 2021/5/12
  */
-public class Bullet {
-    private static final int SPEED = 10;
+public class Bullet extends GameObject{
+    private static final int SPEED = 7;
     private int x,y;
     private DirEnum dir;
     public final static int weight = ResourceMgr.bulletD.getWidth();
@@ -33,11 +33,11 @@ public class Bullet {
         rect.width = weight;
         rect.height = height;
 
-        gm.bullets.add(this);
+        gm.add(this);
     }
 
     public void paint(Graphics g){
-        if(!live) gm.bullets.remove(this);
+        if(!live) gm.remove(this);
         switch (dir){
             case LEFT:
                 g.drawImage(ResourceMgr.bulletL,x,y,null);
@@ -85,15 +85,16 @@ public class Bullet {
     }
 
     public void collideWith(Tank tank){
+
         if(this.group == tank.group) return;
 
         if(rect.intersects(tank.rect)){
-//            System.out.println("TRUE");
+
             tank.die();
             this.die();
             int eX = tank.getX() + Tank.Width/2 - Explode.weight/2;
             int eY = tank.getY() + Tank.Height/2 - Explode.height/2;
-            gm.explodes.add(new Explode(eX,eY,gm));
+            gm.add(new Explode(eX,eY,gm));
 
         }
 
