@@ -7,3 +7,6 @@ gameHeight=720
 #fireStrategy
 goodFs=com.lanpo.tank.strategy.FourFireStrategy
 badFs=com.lanpo.tank.strategy.DefaultFireStrategy
+#colliders
+colliders = com.lanpo.tank.cor.BulletTankCollider,com.lanpo.tank.cor.TankTankCollider,com.lanpo.tank.cor.BulletWallCollider
+,com.lanpo.tank.cor.TankWallCollider

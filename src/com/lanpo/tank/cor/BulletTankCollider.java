@@ -1,8 +1,6 @@
 package com.lanpo.tank.cor;
 
-import com.lanpo.tank.Bullet;
-import com.lanpo.tank.GameObject;
-import com.lanpo.tank.Tank;
+import com.lanpo.tank.*;
 
 /**
  * @author li zhipeng
@@ -11,15 +9,27 @@ import com.lanpo.tank.Tank;
  */
 public class BulletTankCollider implements Collider{
     @Override
-    public void collide(GameObject o1, GameObject o2) {
+    public boolean collide(GameObject o1, GameObject o2) {
         if(o1 instanceof Bullet && o2 instanceof Tank){
             Bullet b = (Bullet) o1;
             Tank t = (Tank) o2;
-            b.collideWith(t);
+            //TODO copy code from method collideWith
+            if(b.group == t.group) return false;
+
+            if(b.getRect().intersects(t.getRect())){
+                if(t.group == Group.BAD){
+                    t.die();
+                    b.die();
+                }
+                int eX = t.getX() + Tank.Width/2 - Explode.weight/2;
+                int eY = t.getY() + Tank.Height/2 - Explode.height/2;
+                GameModel.getInstance().add(new Explode(eX,eY));
+                return true;
+            }
+            return false;
         }else if(o1 instanceof Tank  && o2 instanceof  Bullet){
-            collide(o2, o1);
-        }else {
-            return;
+           return collide(o2, o1);
         }
+        return true;
     }
 }

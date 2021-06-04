@@ -15,21 +15,23 @@ import java.util.Random;
 public class Tank extends GameObject{
     public int x = 200,y = 200;
 
+    int oldX,oldY;
+
     public static int Width = ResourceMgr.badTankL.getWidth();
     public static int Height = ResourceMgr.badTankL.getHeight();
+
 
     public DirEnum dir = DirEnum.DOWN;
     private final static int SPEED = 5;
     private boolean moving = true;
 
 
-    Rectangle rect = new Rectangle();
+    public Rectangle rect = new Rectangle();
 
     private boolean living = true;
 
     private Random random = new Random();
 
-    public GameModel gm = null;
 
     public Group group = Group.GOOD;
 
@@ -84,12 +86,12 @@ public class Tank extends GameObject{
         this.rect = rect;
     }
 
-    public Tank(int x, int y, DirEnum dir, Group group, GameModel gm) {
+    public Tank(int x, int y, DirEnum dir, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.group = group;
-        this.gm = gm;
+
 
         rect.x = this.x;
         rect.y = this.y;
@@ -119,11 +121,13 @@ public class Tank extends GameObject{
         else {
           fs = new DefaultFireStrategy();
         }
+
+        GameModel.getInstance().add(this);
     }
 
     public void paint(Graphics g){
 //        System.out.println("paint");
-        if(!living) gm.remove(this);
+        if(!living) GameModel.getInstance().remove(this);
 
         switch (dir){
             case LEFT:
@@ -152,11 +156,14 @@ public class Tank extends GameObject{
     private void boundsCheck(){
         if(x < 2) x = 2;
         if(y < 2) y = 2;
-        if(x > gm.GAME_WIDTH - Tank.Width -2) x = gm.GAME_WIDTH - Tank.Width -2;
-        if(y > gm.GAME_HEIGHT - Tank.Height -2) y = gm.GAME_HEIGHT - Tank.Height -2;
+        if(x > GameModel.getInstance().GAME_WIDTH - Tank.Width -2) x = GameModel.getInstance().GAME_WIDTH - Tank.Width -2;
+        if(y > GameModel.getInstance().GAME_HEIGHT - Tank.Height -2) y = GameModel.getInstance().GAME_HEIGHT - Tank.Height -2;
     }
 
     private void move(){
+        //记录之前移动的位置
+        oldX = x;
+        oldY = y;
         if(!moving) return;
         switch (dir){
             case LEFT:
@@ -219,7 +226,7 @@ public class Tank extends GameObject{
 
         DirEnum[] dirs = DirEnum.values();
         for (DirEnum dir:dirs) {
-            this.gm.add(new Bullet(bX,bY,dir,this.group,gm));
+            GameModel.getInstance().add(new Bullet(bX,bY,dir,this.group));
         }
 
         if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
@@ -231,6 +238,11 @@ public class Tank extends GameObject{
 
     public void stop(){
         this.moving = false;
+    }
+
+    public void back(){
+        x = oldX;
+        y = oldY;
     }
 
 }

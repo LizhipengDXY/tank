@@ -16,7 +16,7 @@ public class FourFireStrategy implements FireStrategy{
 
         DirEnum[] dirs = DirEnum.values();
         for (DirEnum dir:dirs) {
-            t.gm.add(new Bullet(bX,bY,dir,t.group,t.gm));
+            GameModel.getInstance().add(new Bullet(bX,bY,dir,t.group));
         }
 
         if(t.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();

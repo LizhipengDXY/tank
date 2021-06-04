@@ -1,5 +1,7 @@
 package com.lanpo.tank;
 
+import com.lanpo.tank.cor.ColliderChain;
+
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -11,7 +13,6 @@ import java.awt.event.WindowEvent;
 public class T {
     public static void main(String[] args) throws InterruptedException {
         TankFrame tf = new TankFrame();
-
 
 
         

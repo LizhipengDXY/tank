@@ -16,9 +16,9 @@ import java.util.List;
  */
 public class GameModel {
 
+    private final static GameModel INSTANCE = new GameModel();
 
-
-    Tank myTank = new Tank(200,100,DirEnum.DOWN,Group.GOOD,this);
+     Tank myTank;
 /*    public List<Bullet> bullets = new ArrayList<>();
 
     public List<Tank> tanks = new ArrayList<>();
@@ -33,11 +33,23 @@ public class GameModel {
 
     public GameModel(){
         int initTankCount = Integer.parseInt((String) PropertyMgr.getKey("initTankCount"));
+
+        myTank = new Tank(550,500,DirEnum.DOWN,Group.GOOD);
+        add(myTank);
         //初始化敌方坦克
         for (int i = 0; i < 5; i++) {
-            add(new Tank(50+i*100,200,DirEnum.DOWN,Group.BAD,this));
+            new Tank(50+i*100,200,DirEnum.DOWN,Group.BAD);
         }
+        //初始化墙
+        add(new Wall(150,150,200,50));
+        add(new Wall(550,150,200,50));
+        add(new Wall(300,300,50,200));
+        add(new Wall(550,300,50,200));
 
+    }
+
+    public static GameModel getInstance(){
+        return INSTANCE;
     }
 
     public void add(GameObject go){
@@ -56,7 +68,7 @@ public class GameModel {
         g.drawString("敌人的数量"+tanks.size(),10,90);
         g.drawString("敌人的数量"+explodes.size(),10,120);*/
         g.setColor(color);
-        myTank.paint(g);
+        // myTank.paint(g);
         for (int i = 0; i < objects.size(); i++) {
             objects.get(i).paint(g);
         }
