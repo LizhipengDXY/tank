@@ -31,14 +31,14 @@ public class GameModel {
 
     List<GameObject> objects = new ArrayList<>();
 
-    public GameModel(){
+    private GameModel(){
         int initTankCount = Integer.parseInt((String) PropertyMgr.getKey("initTankCount"));
 
         myTank = new Tank(550,500,DirEnum.DOWN,Group.GOOD);
         add(myTank);
         //初始化敌方坦克
         for (int i = 0; i < 5; i++) {
-            new Tank(50+i*100,200,DirEnum.DOWN,Group.BAD);
+            add(new Tank(50+i*100,200,DirEnum.DOWN,Group.BAD));
         }
         //初始化墙
         add(new Wall(150,150,200,50));
@@ -67,6 +67,7 @@ public class GameModel {
  /*       g.drawString("子弹的数量"+bullets.size(),10,60);
         g.drawString("敌人的数量"+tanks.size(),10,90);
         g.drawString("敌人的数量"+explodes.size(),10,120);*/
+        g.drawString("子弹的数量"+objects.size(),10,60);
         g.setColor(color);
         // myTank.paint(g);
         for (int i = 0; i < objects.size(); i++) {

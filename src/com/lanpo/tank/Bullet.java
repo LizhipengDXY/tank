@@ -31,7 +31,6 @@ public class Bullet extends GameObject{
         rect.y = this.y;
         rect.width = weight;
         rect.height = height;
-
         GameModel.getInstance().add(this);
     }
 

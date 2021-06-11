@@ -23,7 +23,7 @@ public class BulletTankCollider implements Collider{
                 }
                 int eX = t.getX() + Tank.Width/2 - Explode.weight/2;
                 int eY = t.getY() + Tank.Height/2 - Explode.height/2;
-                GameModel.getInstance().add(new Explode(eX,eY));
+                new Explode(eX,eY);
                 return true;
             }
             return false;

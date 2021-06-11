@@ -122,7 +122,7 @@ public class Tank extends GameObject{
           fs = new DefaultFireStrategy();
         }
 
-        GameModel.getInstance().add(this);
+        //GameModel.getInstance().add(this);
     }
 
     public void paint(Graphics g){

@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 //qie huan fen zhi
-    GameModel gm = new GameModel();
+    GameModel gm = GameModel.getInstance();
 
 
 
