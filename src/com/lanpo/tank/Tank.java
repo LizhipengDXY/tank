@@ -13,8 +13,6 @@ import java.util.Random;
  * @date 2021/5/12
  */
 public class Tank extends GameObject{
-    public int x = 200,y = 200;
-
     int oldX,oldY;
 
     public static int Width = ResourceMgr.badTankL.getWidth();
@@ -87,7 +85,6 @@ public class Tank extends GameObject{
     }
 
     public Tank(int x, int y, DirEnum dir, Group group) {
-        System.out.println("tank:"+group.name());
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -100,6 +97,7 @@ public class Tank extends GameObject{
         rect.height = Height;
 
         if(group == Group.GOOD) {
+            System.out.println(group.name());
             String goodFsName = (String) PropertyMgr.getKey("goodFs");
 
 
@@ -120,6 +118,7 @@ public class Tank extends GameObject{
 
         }
         else {
+            System.out.println("badbad");
           fs = new DefaultFireStrategy();
         }
 
@@ -145,6 +144,16 @@ public class Tank extends GameObject{
         }
         move();
 
+    }
+
+    @Override
+    public int getWidth() {
+        return Width;
+    }
+
+    @Override
+    public int getHeight() {
+        return Height;
     }
 
     private void randomDir(){
@@ -220,8 +229,8 @@ public class Tank extends GameObject{
     }
 
     public void fire(){
-        //fs.fire(this);
-        int bX = this.x +Tank.Width/2 - Bullet.weight/2;
+        fs.fire(this);
+       /* int bX = this.x +Tank.Width/2 - Bullet.weight/2;
         int bY = this.y + Tank.Height/2 - Bullet.height/2;
 
         DirEnum[] dirs = DirEnum.values();
@@ -229,7 +238,7 @@ public class Tank extends GameObject{
             GameModel.getInstance().add(new Bullet(bX,bY,dir,this.group));
         }
 
-        if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
+        if(this.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();*/
     }
 
     public void die(){

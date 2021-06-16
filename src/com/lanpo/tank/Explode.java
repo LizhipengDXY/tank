@@ -36,6 +36,16 @@ public class Explode extends GameObject{
             GameModel.getInstance().remove(this);
     }
 
+    @Override
+    public int getWidth() {
+        return weight;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
     public int getStep() {
         return step;
     }

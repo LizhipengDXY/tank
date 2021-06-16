@@ -8,11 +8,15 @@ import java.awt.*;
  * @Description:
  */
 public abstract class GameObject {
-    int x,y;
+    public int x,y;
 
     protected GameObject() {
     }
 
     public abstract void paint(Graphics g);
+
+    public abstract int getWidth();
+
+    public abstract int getHeight();
 
 }

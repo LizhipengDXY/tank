@@ -18,7 +18,7 @@ public class GameModel {
 
     private final static GameModel INSTANCE = new GameModel();
 
-     Tank myTank;
+    Tank myTank;
 /*    public List<Bullet> bullets = new ArrayList<>();
 
     public List<Tank> tanks = new ArrayList<>();
@@ -33,12 +33,11 @@ public class GameModel {
 
     private GameModel(){
         int initTankCount = Integer.parseInt((String) PropertyMgr.getKey("initTankCount"));
-        System.out.println("miantank:");
         myTank = new Tank(550,500,DirEnum.DOWN,Group.GOOD);
-     /*   //初始化敌方坦克
+        //初始化敌方坦克
         for (int i = 0; i < 5; i++) {
             add(new Tank(50+i*100,200,DirEnum.DOWN,Group.BAD));
-        }*/
+        }
         //初始化墙
         add(new Wall(150,150,200,50));
         add(new Wall(550,150,200,50));
