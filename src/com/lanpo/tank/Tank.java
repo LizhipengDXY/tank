@@ -87,6 +87,7 @@ public class Tank extends GameObject{
     }
 
     public Tank(int x, int y, DirEnum dir, Group group) {
+        System.out.println("tank:"+group.name());
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -126,7 +127,6 @@ public class Tank extends GameObject{
     }
 
     public void paint(Graphics g){
-//        System.out.println("paint");
         if(!living) GameModel.getInstance().remove(this);
 
         switch (dir){
