@@ -13,8 +13,10 @@ public class BulletTankCollider implements Collider{
         if(o1 instanceof Bullet && o2 instanceof Tank){
             Bullet b = (Bullet) o1;
             Tank t = (Tank) o2;
+            System.out.println("coll"+t.group.name());
             //TODO copy code from method collideWith
             if(b.group == t.group) return false;
+
 
             if(b.getRect().intersects(t.getRect())){
                 if(t.group == Group.BAD){

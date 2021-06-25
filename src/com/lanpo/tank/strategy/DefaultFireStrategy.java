@@ -16,10 +16,11 @@ public class DefaultFireStrategy implements FireStrategy {
         int bX = t.x +Tank.Width/2 - Bullet.weight/2;
         int bY = t.y + Tank.Height/2 - Bullet.height/2;
         // 有些问题
-        GameModel.getInstance().add(
+        /*GameModel.getInstance().add(
                 new RectDecorator(
                         new TailDecorator(
-                        new Bullet(bX,bY,t.dir,t.group))));
+                        new Bullet(bX,bY,t.dir,t.group))));*/
+        new Bullet(bX,bY,t.dir,t.group);
 
         if(t.group == Group.GOOD) new Thread(()->new Audio("audio/tank_fire.wav").play()).start();
      }

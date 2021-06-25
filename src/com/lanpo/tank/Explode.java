@@ -31,7 +31,6 @@ public class Explode extends GameObject{
 
     public void paint(Graphics g){
         g.drawImage(ResourceMgr.explodes[step++],x,y,null);
-        System.out.println("Thread Ex:"+step);
         if(step > ResourceMgr.explodes.length-1)
             GameModel.getInstance().remove(this);
     }

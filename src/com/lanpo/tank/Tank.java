@@ -1,11 +1,16 @@
 package com.lanpo.tank;
 
+import com.lanpo.tank.observer.TankFireEvent;
+import com.lanpo.tank.observer.TankFireHandler;
+import com.lanpo.tank.observer.TankFireObserver;
 import com.lanpo.tank.strategy.DefaultFireStrategy;
 import com.lanpo.tank.strategy.FireStrategy;
 
 import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -254,4 +259,11 @@ public class Tank extends GameObject{
         y = oldY;
     }
 
+    private List<TankFireObserver> fireObserverList = Arrays.asList(new TankFireHandler());
+    public void handleFireKey() {
+        TankFireEvent event = new TankFireEvent(this);
+        for (TankFireObserver o:fireObserverList) {
+            o.actionOnFire(event);
+        }
+    }
 }
